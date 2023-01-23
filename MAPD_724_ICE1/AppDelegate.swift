@@ -1,9 +1,3 @@
-//
-//  AppDelegate.swift
-//  MAPD_724_ICE1
-//
-//  Created by Lipawsky on 2023-01-22.
-//
 
 import UIKit
 
