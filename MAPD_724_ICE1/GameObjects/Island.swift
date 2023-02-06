@@ -8,12 +8,12 @@ class Island:GameObject{
     init() {
         super.init(imageString: "island", initialScale: 2.0)
         Start()
-        Reset()
     }
     
     override func Start() {
         zPosition = Layer.island.rawValue
         verticalSpeed = 5
+        Reset()
     }
     
     override func CheckBounds() {
