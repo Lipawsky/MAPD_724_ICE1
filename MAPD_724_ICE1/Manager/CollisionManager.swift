@@ -1,20 +1,22 @@
+
 import GameplayKit
 import SpriteKit
 
 class CollisionManager
 {
-    // get a reference to the GameViewController
+    //get reference to the gameiewcontroller
     public static var gameViewController : GameViewController?
     
-    // Utility Functions
     public static func SquaredDistance(point1: CGPoint, point2: CGPoint) -> CGFloat
     {
         let Xs: CGFloat = point2.x - point1.x
         let Ys: CGFloat = point2.y - point1.y
+        
         return Xs * Xs + Ys * Ys
+        
     }
     
-    // Collision Function
+    //Collision Function
     public static func SquaredRadiusCheck(scene: SKScene, object1: GameObject, object2: GameObject)
     {
         let P1 = object1.position
@@ -23,32 +25,54 @@ class CollisionManager
         let P2Radius = object2.halfHeight!
         let Radii = P1Radius + P2Radius
         
-        // the collision check - overlapping circles
-        if(SquaredDistance(point1: P1, point2: P2) < Radii * Radii)
+        //collision check - overlapping circles
+        if(SquaredDistance(point1: P1, point2: P2) < (Radii * Radii))
         {
-            // we have a collision
+            //we have collision
             if(!object2.isColliding!)
             {
-                // if object2 is not already colliding
+                //if its not already colliding
                 switch(object2.name)
                 {
                 case "island":
+//                    print("colliding with ISLAND")
                     ScoreManager.Score += 100
                     gameViewController?.updateScoreLabel()
-                    scene.run(SKAction.playSoundFileNamed("yay", waitForCompletion: false))
+                    scene.run(SKAction.playSoundFileNamed("powerup", waitForCompletion: false))
+                    
+                    if(ScoreManager.Score % 1000 == 0 ) //for every 1000 score, +1 to lives
+                    {
+                        ScoreManager.Lives += 1
+                        gameViewController?.updateLivesLabel()
+                    }
+      
                     break
+                    
                 case "cloud":
+//                    print("colliding with CLOUD")
                     ScoreManager.Lives -= 1
                     gameViewController?.updateLivesLabel()
-                    scene.run(SKAction.playSoundFileNamed("thunder", waitForCompletion: false))
+                    scene.run(SKAction.playSoundFileNamed("lightning", waitForCompletion: false))
+                    
+                    if(ScoreManager.Lives < 1)
+                    {
+                        gameViewController?.presentEndScene()
+                    }
+
                     break
+                    
                 default:
                     break
                 }
                 
                 object2.isColliding = true
+                
             }
+            
+            
+            
         }
     }
+    
 }
 
